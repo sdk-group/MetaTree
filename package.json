@@ -1,0 +1,26 @@
+{
+    "name": "MetaTree",
+    "version": "0.0.1-a",
+    "description": "Promisified  Couchbase wrapper",
+    "main": "MetaTree.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/YuuKohaku/secret_v2.0_dev/tree/master/kbtest"
+    },
+    "keywords": [
+    "couchbase",
+    "promises",
+      "bluebird"
+  ],
+    "author": "Yuu & SS- (spirit guide mostly)",
+    "license": "ISC",
+    "dependencies": {
+        "bluebird": "^2.9.14",
+        "couchbase": "^2.0.6",
+        "lodash": "^3.6.0",
+        "node-uuid": "^1.4.3"
+    }
+}
