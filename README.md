@@ -4,36 +4,41 @@ Meta Tree object model implementation.
 ## Configuring
 Config file is located at Consts/config.js. Later it will be incapsulated in separete module.
 Note that MetaTree usage requires:
+
 1. Couchbase installed 
 2. Node.js or io.js installed
 3. Node.js driver for Couchbase installed. It can be rather painful.
+4. All that stuff from package.json
 
 ## Creating model objects
-Let us create a metaobject (class) called Something.
+Hence you are going to create a metaobject (class) called Something.
+
 1. Create a document with id "schema/something" in your Couchbase bucket.
 2. Create file Model/Something.js with minimal contents:
-```
-'use strict';
 
-var Abstract = require("./Abstract");
-var util = require("util");
+    ```
+    'use strict';
+    
+    var Abstract = require("./Abstract");
+    var util = require("util");
+    
+    function Something() {
+        Abstract.call(this);
+    }
+    
+    util.inherits(Something, Abstract);
+    
+    module.exports = Something;
+    ```
+3.  Now you can override any method of Abstract in your metaobject.
+    E.g.,
 
-function Something() {
-    Abstract.call(this);
-}
-
-util.inherits(Something, Abstract);
-
-module.exports = Something;
-```
-3. Now you can override any method of Abstract in your metaobject.
-E.g.,
-```
-Something.prototype.remove = function(){
-    this.enabled = false;
-    return this.save();
-}
-```
+    ```
+    Something.prototype.remove = function(){
+        this.enabled = false;
+        return this.save();
+    }
+    ```
 
 Note that it is meant to return promises from overriden functions and leave exception handling to higher level code.
 
