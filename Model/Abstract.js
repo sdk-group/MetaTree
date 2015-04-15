@@ -10,39 +10,48 @@ var _ = require("lodash");
 function Abstract() {
     var type = this.constructor.name.toLowerCase();
     this.db_id = -1;
-    Object.defineProperty(this, "_type", {
-        value: type,
-        writable: false,
-        enumerable: true,
-        configurable: false
-    });
-    Object.defineProperty(this, "_bucket", {
-        value: null,
-        writable: true,
-        enumerable: false,
-        configurable: false
-    });
-    Object.defineProperty(this, "_identifier", {
-        value: identifier,
-        writable: true,
-        enumerable: false,
-        configurable: false
-    });
-    Object.defineProperty(this, "selector", {
-        get: function () {
-            return (this._identifier.do())(this._type, this.db_id);
+    Object.defineProperties(this, {
+        "_type": {
+            value: type,
+            writable: false,
+            enumerable: true,
+            configurable: false
         },
-        set: function (value) {
-            return false;
+        "_bucket": {
+            value: null,
+            writable: true,
+            enumerable: false,
+            configurable: false
         },
-        enumerable: false
+        "_identifier": {
+            value: identifier,
+            writable: true,
+            enumerable: false,
+            configurable: false
+        },
+        "selector": {
+            get: function () {
+                return (this._identifier.do())(this._type, this.db_id);
+            },
+            set: function (value) {
+                return false;
+            },
+            enumerable: false
+        },
+        "_db_fields": {
+            value: [],
+            writable: true,
+            enumerable: false,
+            configurable: false
+        },
+        "_meta_fields": {
+            value: [],
+            writable: true,
+            enumerable: false,
+            configurable: false
+        }
     });
-    Object.defineProperty(this, "_db_fields", {
-        value: [],
-        writable: true,
-        enumerable: false,
-        configurable: false
-    });
+    this._meta_fields = _.keys(this);
 };
 
 Abstract.prototype.init = function (bucket) {
@@ -57,7 +66,7 @@ Abstract.prototype._fromSchema = function () {
     return this._bucket.get(id, {}).then(function (res) {
         //validate res
         var data = res.value;
-        self._db_fields = Object.keys(data);
+        self._db_fields = _.keys(data);
         _.forEach(data, function (el, key) {
             self[key] = el;
         });

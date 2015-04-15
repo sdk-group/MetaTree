@@ -1,6 +1,6 @@
 'use strict';
 
-var Abstract = require("./Abstract");
+var Abstract = require("../../../Model/Abstract");
 var util = require("util");
 var path = require("path");
 var Promise = require("bluebird");

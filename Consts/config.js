@@ -8,7 +8,7 @@ var config = {
     db: {
         server_ip: "127.0.0.1",
         n1ql: "127.0.0.1:8093",
-        bucket_name: "mt1",
+        bucket_name: "mt",
         login: "Administrator",
         password: "123456"
     }

@@ -5,11 +5,10 @@ var Error = require('./Error');
 var Linker = require('./Linker');
 var DB_Face = require('./Couchbird/DB_Face');
 var identifier = require("./Strategy/IdentifierStrategy");
-var fs = require("fs");
 var path = require("path");
-var Config = require("./Consts/config");
 var Promise = require("bluebird");
 var _ = require("lodash");
+var fs = Promise.promisifyAll(require("fs"));
 
 function MetaTree(properties) {
     var opts = {
@@ -25,23 +24,44 @@ function MetaTree(properties) {
     this._linker = new Linker(this._db);
     this._uuid_id = identifier.do("uuid");
     this._default_id = identifier.do();
+    this._model_dir = path.resolve(__dirname, "Model");
 }
 
-MetaTree.prototype.initModel = function () {
+MetaTree.prototype.initModel = function (model_dir) {
     var files = [];
     var promises = [];
     var self = this;
-    files = fs.readdirSync(Config.model_dir);
-    for (var mo in files) {
-        var mo_path = path.resolve(Config.model_dir, files[mo]);
-        var mo_module = require(mo_path);
-        var meta_object = new mo_module;
-        var promise = meta_object.init(this._db).then(function (res) {
-            self[res.constructor.name] = Object.seal(res);
+    return Promise.props({
+            native: fs.readdirAsync(this._model_dir),
+            model: fs.statAsync(model_dir)
+                .then(function (res) {
+                    return res.isDirectory() ? fs.readdirAsync(model_dir) : false;
+                })
+                .catch(function (err) {
+                    return false;
+                })
+        })
+        .then(function (res) {
+            var mfiles = !res.model ? [] : _.map(res.model, function (x) {
+                return path.resolve(model_dir, x)
+            });
+            var nfiles = _.map(res.native, function (x) {
+                return path.resolve(self._model_dir, x)
+            });
+            var files = _.union(mfiles, nfiles);
+            for (var mo in files) {
+                console.log("loading", files[mo]);
+                var mo_module = require(files[mo]);
+                var meta_object = new mo_module;
+                var promise = meta_object
+                    .init(self._db)
+                    .then(function (res) {
+                        self[res.constructor.name] = Object.seal(res);
+                    });
+                promises.push(promise);
+            }
+            return Promise.all(promises);
         });
-        promises.push(promise);
-    }
-    return Promise.all(promises);
 }
 MetaTree.prototype.create = function (obj, opts) {
     if (!(obj instanceof Abstract))
