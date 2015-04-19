@@ -1,0 +1,12 @@
+{
+    "base_dir": "C:\\Users\\Vergil\\Documents\\GitHub\\MetaTree\\examples\\working_with_config",
+    "model_dir": "C:\\Users\\Vergil\\Documents\\GitHub\\MetaTree\\examples\\working_with_config\\Model",
+    "strategies_dir": "C:\\Users\\Vergil\\Documents\\GitHub\\MetaTree\\examples\\working_with_config\\Strategy",
+    "db": {
+        "server_ip": "127.0.0.1",
+        "n1ql": "127.0.0.1:8093",
+        "bucket_name": "mt",
+        "login": "Administrator",
+        "password": "123456"
+    }
+}

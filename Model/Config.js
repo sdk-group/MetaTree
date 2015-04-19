@@ -1,3 +1,5 @@
+'use strict';
+
 var Abstract = require("./Abstract");
 var util = require("util");
 var _ = require("lodash");
@@ -20,7 +22,7 @@ Config.prototype.retrieve = function () {
 }
 
 Config.prototype.save = function () {
-    var data = _.pick(this, _.difference(_.keys(this), this._meta_fields));
+    var data = _.omit(this, this._meta_fields);
     return this._bucket.upsert(this.selector, data);
 }
 

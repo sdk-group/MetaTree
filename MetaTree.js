@@ -50,7 +50,7 @@ MetaTree.prototype.initModel = function (model_dir) {
             });
             var files = _.union(mfiles, nfiles);
             for (var mo in files) {
-                console.log("loading", files[mo]);
+                //  console.log("loading", files[mo]);
                 var mo_module = require(files[mo]);
                 var meta_object = new mo_module;
                 var promise = meta_object
