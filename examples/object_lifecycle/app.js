@@ -49,7 +49,7 @@ meta_tree.initModel(path.resolve(__dirname, "Model"))
     .then(function (res) {
         console.log("after remove", op1);
         return meta_tree.update(op1, 1, {
-            hr_desc: "Ghost of the Operator",
+            hr_desc: "Phantom of the Operator",
             qaTerminalDesign: {
                 something: "else"
             }

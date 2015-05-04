@@ -7,20 +7,17 @@ var Error = require("../Error");
 var DB_Bucket = require("./DB_Bucket");
 var Promise = require("bluebird");
 var config = require("../Consts/config");
+var _ = require("lodash");
 
 function DB_Face(params) {
     var opts = {
         server_ip: "127.0.0.1",
         n1ql: "127.0.0.1:8093"
     };
-    for (var i in opts) {
-        if (params.hasOwnProperty(i)) {
-            opts[i] = params[i];
-        }
-    }
+    _.assign(opts, params);
     this._server_ip = opts.server_ip;
     this._n1ql = opts.n1ql;
-    this._cluster = new Couchbase.Cluster('couchbase://' + this._server_ip);
+    this._cluster = new Couchbase.Cluster(this._server_ip);
     this._buckets = {};
 
     //just to incapsulate it here

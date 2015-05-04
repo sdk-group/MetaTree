@@ -6,18 +6,9 @@ var Error = require("../Error");
 var Promise = require("bluebird");
 
 var DB_Bucket = function (cluster, bucket_name, params) {
-    var opts = {
-        server_ip: "127.0.0.1",
-        n1ql: "127.0.0.1:8093"
-    };
-    for (var i in opts) {
-        if (params.hasOwnProperty(i)) {
-            opts[i] = params[i];
-        }
-    }
     this._cluster = cluster;
     this.bucket_name = bucket_name;
-    this._n1ql = [opts.n1ql];
+    this._n1ql = [params.n1ql];
     this._bucket = cluster.openBucket(this.bucket_name,
         function (err, res) {
             if (err) {
@@ -29,7 +20,10 @@ var DB_Bucket = function (cluster, bucket_name, params) {
 //INIT
 DB_Bucket.prototype._promisifyMethod = function (method, options) {
     return function promisified() {
-        var args = [].slice.call(arguments);
+        var args = new Array(arguments.length);
+        for (var i = 0; i < args.length; ++i) {
+            args[i] = arguments[i];
+        }
         var self = this;
         var optErr = (options && options.error) ? options.error : '';
         return new Promise(function (resolve, reject) {

@@ -61,17 +61,21 @@ Abstract.prototype.init = function (bucket) {
 
 //DO NOT use this directly
 Abstract.prototype._fromSchema = function () {
-    var id = (identifier.do('schema'))(this._type);
+    var id = (this._identifier.do('schema'))(this._type);
     var self = this;
-    return this._bucket.get(id, {}).then(function (res) {
-        //validate res
-        var data = res.value;
-        self._db_fields = _.keys(data);
-        _.forEach(data, function (el, key) {
-            self[key] = el;
+    return this._bucket.get(id, {})
+        .then(function (res) {
+            //validate res
+            var data = res.value;
+            self._db_fields = _.keys(data);
+            _.forEach(data, function (el, key) {
+                self[key] = el;
+            });
+            return Promise.resolve(self);
+        })
+        .catch(function (err) {
+            return Promise.resolve(self);
         });
-        return Promise.resolve(self);
-    });
 }
 
 //spawn a clone. This is how new objects of certain type are created
@@ -82,6 +86,7 @@ Abstract.prototype.spawn = function (opts) {
 
 //update current DB object representation with current values of code representation
 Abstract.prototype.save = function () {
+    console.log("saving");
     var data = _.pick(this, this._db_fields);
     return this._bucket.upsert(this.selector, data);
 }
@@ -110,8 +115,8 @@ Abstract.prototype.remove = function () {
     return this._bucket.remove(this.selector);
 }
 
-Abstract.prototype.setHandler = function (name, fn) {
-    this[name] = fn;
+Abstract.prototype.isInSchema = function (key) {
+    return (_.indexOf(this._db_fields, key) >= 0);
 }
 
 module.exports = Abstract;

@@ -14,11 +14,7 @@ function MetaTree(properties) {
     var opts = {
         bucket_name: "default"
     };
-    for (var i in opts) {
-        if (properties.hasOwnProperty(i)) {
-            opts[i] = properties[i];
-        }
-    }
+    _.assign(opts, properties);
     this._bucket_name = opts.bucket_name;
     this._db = DB_Face.bucket(this._bucket_name);
     this._linker = new Linker(this._db);
@@ -49,9 +45,9 @@ MetaTree.prototype.initModel = function (model_dir) {
                 return path.resolve(self._model_dir, x)
             });
             var files = _.union(mfiles, nfiles);
-            for (var mo in files) {
+            _.forEach(files, function (mo) {
                 //  console.log("loading", files[mo]);
-                var mo_module = require(files[mo]);
+                var mo_module = require(mo);
                 var meta_object = new mo_module;
                 var promise = meta_object
                     .init(self._db)
@@ -59,7 +55,7 @@ MetaTree.prototype.initModel = function (model_dir) {
                         self[res.constructor.name] = Object.seal(res);
                     });
                 promises.push(promise);
-            }
+            });
             return Promise.all(promises);
         });
 }
@@ -107,12 +103,12 @@ MetaTree.prototype.remove = function (obj, id) {
     return obj.remove();
 }
 
-MetaTree.prototype.link = function (obj1, obj2) {
+MetaTree.prototype.link = function (obj1, obj2, relation) {
     if (!(obj1 instanceof Abstract) && !(obj2 instanceof Abstract) && !(_.isString(obj1)) && !(_.isString(obj2)))
         throw new Error("INVALID_ARGUMENT", "Arguments should be either objects or strings.");
     var obj1_sel = (obj1 instanceof Abstract) ? obj1.selector : obj1;
     var obj2_sel = (obj2 instanceof Abstract) ? obj2.selector : obj2;
-    return this._linker.link(obj1_sel, obj2_sel);
+    return this._linker.link(obj1_sel, obj2_sel, relation);
 }
 
 MetaTree.prototype.unlink = function (obj1, obj2) {

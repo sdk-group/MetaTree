@@ -1,15 +1,15 @@
 'use strict';
 
 var Strategy = require("./Strategy");
-var util = require("util");
 var uuid = require('node-uuid');
+var _ = require("lodash");
 
 var IdentifierStrategy = function () {
     Strategy.call(this);
     this.name = "IdentifierStrategy";
 }
 
-util.inherits(IdentifierStrategy, Strategy);
+require("util").inherits(IdentifierStrategy, Strategy);
 
 IdentifierStrategy.prototype.do = function (which) {
     if (this.strategies[which]) {
@@ -21,7 +21,10 @@ IdentifierStrategy.prototype.do = function (which) {
 
 IdentifierStrategy.prototype.strategies = {
     default: function () {
-        var args = [].slice.call(arguments);
+        var args = new Array(arguments.length);
+        for (var i = 0; i < args.length; ++i) {
+            args[i] = arguments[i];
+        }
         return args.join("/").toLowerCase();
     },
     uuid: function () {
@@ -32,6 +35,10 @@ IdentifierStrategy.prototype.strategies = {
     },
     schema: function (type) {
         return ["schema", type].join("/");
+    },
+    history: function (author, selector) {
+        var ts = ~~(_.now() / 1000);
+        return [("history-" + author), selector, ts].join("/");
     }
 }
 var ids = new IdentifierStrategy();

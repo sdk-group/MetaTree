@@ -1,7 +1,6 @@
 'use strict';
 
 var Abstract = require("../../../Model/Abstract");
-var util = require("util");
 var path = require("path");
 var Promise = require("bluebird");
 var _ = require("lodash");
@@ -11,7 +10,7 @@ function Operator() {
     Abstract.call(this);
 };
 
-util.inherits(Operator, Abstract);
+require("util").inherits(Operator, Abstract);
 
 Operator.prototype.toggle = function (enabled) {
     this.enabled = enabled ? true : false;

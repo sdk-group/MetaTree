@@ -1,14 +1,13 @@
 'use strict';
 
 var Abstract = require("./Abstract");
-var util = require("util");
 var _ = require("lodash");
 
 function Config() {
     Abstract.call(this);
 }
 
-util.inherits(Config, Abstract);
+require("util").inherits(Config, Abstract);
 
 //no need to get this from db
 Config.prototype.init = function (bucket) {
