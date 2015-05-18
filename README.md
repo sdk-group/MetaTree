@@ -20,13 +20,12 @@ Hence you are going to create a metaobject (class) called Something.
     'use strict';
     
     var Abstract = require("./Abstract");
-    var util = require("util");
     
     function Something() {
         Abstract.call(this);
     }
     
-    util.inherits(Something, Abstract);
+    require("util").inherits(Something, Abstract);
     
     module.exports = Something;
     ```

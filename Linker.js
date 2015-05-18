@@ -7,16 +7,14 @@ var identifier = require("./Strategy/IdentifierStrategy");
 
 var Linker = function (bucket) {
     this._db = bucket;
-    this.id_maker = identifier.do("link");
+    this.identifier = identifier.do("link");
 }
 
 //link by selectors, single doc per link
 //if link exists, it will be updated, else it will be created
-Linker.prototype.link = function (sel1, sel2) {
-    if (!(sel1.split("/").length == sel2.split("/").length == 2))
-        throw new Error("INVALID_ARGUMENT", "Cannot bind non-primary objects. Selectors should be passed like 'type/number'.");
-    var dln = this._make_link(sel1, sel2);
-    var rln = this._make_link(sel2, sel1);
+Linker.prototype.link = function (sel1, sel2, relation) {
+    var dln = this._make_link(sel1, sel2, relation);
+    var rln = this._make_link(sel2, sel1, relation);
     var self = this;
     return this.exists(dln.id)
         .then(function (res) {
@@ -32,18 +30,18 @@ Linker.prototype.link = function (sel1, sel2) {
 }
 
 Linker.prototype.unlink = function (sel1, sel2) {
-    var d_id = this.id_maker(sel1, sel2);
-    var r_id = this.id_maker(sel2, sel1);
+    var d_id = this.identifier(sel1, sel2);
+    var r_id = this.identifier(sel2, sel1);
     return Promise.any([this._db.remove(d_id), this._db.remove(r_id)]);
 }
 
 //returns json to put into db
-Linker.prototype._make_link = function (sel1, sel2) {
+Linker.prototype._make_link = function (sel1, sel2, rel_data) {
     return {
-        id: this.id_maker(sel1, sel2),
+        id: this.identifier(sel1, sel2),
         data: {
-            prima: sel1,
-            secunda: sel2
+            bound: [sel1, sel2],
+            relation: rel_data
         }
     };
 }
