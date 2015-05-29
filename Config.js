@@ -4,7 +4,7 @@ var Promise = require("bluebird");
 var Error = require("./Error");
 var DB_Face = require('./Couchbird/DB_Face');
 var traverse = require("traverse");
-var config = require("./Consts/config");
+var config = require("./const/config");
 
 var Config = function (bucket_name) {
     var _cfg_keys = {};

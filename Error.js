@@ -1,5 +1,5 @@
 'use strict';
-var errors = require("./Consts/errors");
+var errors = require("./const/errors");
 
 function MetaTreeError(info, message) {
     var msg = message ? (" : " + message) : "";

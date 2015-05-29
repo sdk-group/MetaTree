@@ -2,12 +2,12 @@
 
 var Abstract = require("./Abstract");
 var _ = require("lodash");
-var config = require("../Consts/config");
+var config = require("../const/config");
 var Promise = require("bluebird");
 
 function Historified() {
-       this._history = {};
-       this.allow_no_setter = false;
+    this._history = {};
+    this.allow_no_setter = false;
     Abstract.call(this);
 }
 
