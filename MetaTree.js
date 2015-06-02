@@ -1,20 +1,30 @@
 'use strict';
 
 var Abstract = require("./Model/Abstract");
-var Error = require('./Error');
+var Error = require('./Error/MetaTreeError');
 var Linker = require('./Linker');
-var DB_Face = require('./Couchbird/DB_Face');
+var Couchbird = require('Couchbird');
 var identifier = require("./Strategy/IdentifierStrategy");
 var path = require("path");
 var Promise = require("bluebird");
 var _ = require("lodash");
 var fs = Promise.promisifyAll(require("fs"));
 
+var DB_Face = null;
+
 function MetaTree(properties) {
     var opts = {
+        server_ip: "127.0.0.1",
+        n1ql: "127.0.0.1:8093",
         bucket_name: "default"
     };
     _.assign(opts, properties);
+
+    DB_Face = Couchbird({
+        server_ip: opts.server_ip,
+        n1ql: opts.n1ql
+    });
+
     this._bucket_name = opts.bucket_name;
     this._db = DB_Face.bucket(this._bucket_name);
     this._linker = new Linker(this._db);

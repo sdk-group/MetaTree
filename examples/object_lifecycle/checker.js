@@ -1,4 +1,4 @@
-var config = require("../../Consts/config");
+var config = require("../../const/config");
 var _ = require("lodash");
 
 var opts = {
@@ -6,8 +6,14 @@ var opts = {
     n1ql: config.db.n1ql
 }
 
-var db1 = require("../../Couchbird/DB_Face");
-var db2 = require("../../Couchbird/DB_Face");
+var db1 = require("Couchbird")({
+    server_ip: config.db.server_ip,
+    n1ql: config.db.n1ql
+});
+var db2 = require("Couchbird")({
+    server_ip: config.db.server_ip,
+    n1ql: config.db.n1ql
+});
 
 console.log(db1 === db2);
 

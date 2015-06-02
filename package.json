@@ -1,27 +1,28 @@
 {
-  "name": "MetaTree",
-  "version": "0.0.1-a",
-  "description": "Promisified  Couchbase wrapper",
-  "main": "MetaTree.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/YuuKohaku/secret_v2.0_dev/tree/master/kbtest"
-  },
-  "keywords": [
-    "couchbase",
-    "promises",
-    "bluebird"
+    "name": "MetaTree",
+    "version": "0.0.2",
+    "description": "Object model atop of couchbase",
+    "main": "MetaTree.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/YuuKohaku/MetaTree.git"
+    },
+    "bugs": {
+        "url": "https://github.com/sdk-group/MetaTree/issues"
+    },
+    "homepage": "https://github.com/sdk-group/MetaTree",
+    "keywords": [
   ],
-  "author": "Yuu & SS- (spirit guide mostly)",
-  "license": "ISC",
-  "dependencies": {
-    "bluebird": "^2.9.14",
-    "couchbase": "^2.0.6",
-    "lodash": "^3.6.0",
-    "node-uuid": "^1.4.3",
-    "traverse": "^0.6.6"
-  }
+    "author": "V.",
+    "license": "ISC",
+    "dependencies": {
+        "bluebird": "^2.9.14",
+        "lodash": "^3.6.0",
+        "node-uuid": "^1.4.3",
+        "traverse": "^0.6.6",
+        "Couchbird": "git+https://github.com/YuuKohaku/Couchbird.git"
+    }
 }

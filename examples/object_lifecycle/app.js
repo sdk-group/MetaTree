@@ -8,6 +8,8 @@ var _ = require("lodash");
 var path = require("path");
 
 var meta_tree = new MetaTree({
+    server_ip: "192.168.1.2",
+    n1ql: "192.168.1.2:8093",
     bucket_name: "mt"
 });
 
