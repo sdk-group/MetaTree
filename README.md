@@ -63,6 +63,8 @@ var util = require("util");
 var config = require("./Consts/config");
 
 var meta_tree = new MetaTree({
+        server_ip: config.db.server_ip,
+        n1ql: config.db.n1ql,
     bucket_name: config.db.bucket_name
 });
 var op1 = null;

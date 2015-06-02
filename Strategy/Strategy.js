@@ -1,6 +1,6 @@
 'use strict';
 
-var Error = require("../Error");
+var Error = require("../Error/MetaTreeError");
 
 var Strategy = function () {}
 

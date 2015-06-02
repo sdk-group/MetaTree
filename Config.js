@@ -1,15 +1,23 @@
 "use strict";
 var _ = require("lodash");
 var Promise = require("bluebird");
-var Error = require("./Error");
-var DB_Face = require('./Couchbird/DB_Face');
+var Error = require("./Error/MetaTreeError");
+var Couchbird = require('Couchbird');
 var traverse = require("traverse");
 var config = require("./const/config");
+
+var DB_Face = null;
 
 var Config = function (bucket_name) {
     var _cfg_keys = {};
     var _cfg_origs = {};
     var _initial = config;
+
+    DB_Face = Couchbird({
+        server_ip: config.db.server_ip,
+        n1ql: config.db.n1ql
+    });
+
     var _db = DB_Face.bucket(config.config_bucket);
     var _path_delimiter = ".";
 

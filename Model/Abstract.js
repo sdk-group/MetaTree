@@ -1,6 +1,6 @@
 'use strict';
 
-var Error = require('../Error')
+var Error = require('../Error/MetaTreeError')
 var identifier = require("../Strategy/IdentifierStrategy");
 var Promise = require("bluebird");
 var path = require("path");
@@ -107,6 +107,7 @@ Abstract.prototype.retrieve = function () {
     return this._bucket.get(self.selector)
         .then(function (res) {
             _.merge(self, res.value);
+            console.log("GOT", res);
             return Promise.resolve(self);
         });
 }
