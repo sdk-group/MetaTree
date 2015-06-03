@@ -37,26 +37,28 @@ MetaTree.prototype.initModel = function (model_dir) {
     var files = [];
     var promises = [];
     var self = this;
-    return Promise.props({
-            native: fs.readdirAsync(this._model_dir),
-            model: fs.statAsync(model_dir)
-                .then(function (res) {
-                    return res.isDirectory() ? fs.readdirAsync(model_dir) : false;
-                })
-                .catch(function (err) {
-                    return false;
-                })
-        })
+    var dirs = _.isArray(model_dir) ? model_dir : [model_dir];
+    dirs.push(this._model_dir);
+    var dir_promises = _.map(dirs, function (dir) {
+        return fs.statAsync(dir)
+            .then(function (res) {
+                return res.isDirectory() ? fs.readdirAsync(dir) : Promise.reject(false);
+            })
+            .then(function (res) {
+                var paths = _.map(res, function (x) {
+                    return path.resolve(dir, x)
+                });
+                return Promise.resolve(paths);
+            })
+            .catch(function (err) {
+                return Promise.resolve([]);
+            });
+    });
+    return Promise.all(dir_promises)
         .then(function (res) {
-            var mfiles = !res.model ? [] : _.map(res.model, function (x) {
-                return path.resolve(model_dir, x)
-            });
-            var nfiles = _.map(res.native, function (x) {
-                return path.resolve(self._model_dir, x)
-            });
-            var files = _.union(mfiles, nfiles);
+            var files = _.flattenDeep(res);
             _.forEach(files, function (mo) {
-                //  console.log("loading", files[mo]);
+                //                console.log("loading", mo);
                 var mo_module = require(mo);
                 var meta_object = new mo_module;
                 var promise = meta_object

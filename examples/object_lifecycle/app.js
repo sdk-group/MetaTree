@@ -16,7 +16,7 @@ var meta_tree = new MetaTree({
 var op1 = null;
 var op2 = null;
 var Operator = null;
-meta_tree.initModel(path.resolve(__dirname, "Model"))
+meta_tree.initModel([path.resolve(__dirname, "Model"), path.resolve(__dirname, "../historified/Model")])
     .then(function () {
         Operator = meta_tree.Operator;
         op1 = meta_tree.create(Operator, {
