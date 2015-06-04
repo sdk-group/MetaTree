@@ -2,8 +2,8 @@
 
 var Abstract = require("./Abstract");
 var _ = require("lodash");
-var config = require("../const/config");
 var Promise = require("bluebird");
+
 
 function Historified() {
     this._history = {};
@@ -43,7 +43,7 @@ Historified.prototype._writedown = function () {
     if (_.isEmpty(this._history))
         return Promise.resolve(false);
 
-    var id = (this._identifier.do("history"))(config.name, this.selector);
+    var id = (this._identifier.do("history"))(this.role, this.selector);
     var data = _.transform(this._history, function (acc, val, n) {
         acc[n] = val.new;
     });

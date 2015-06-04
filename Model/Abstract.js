@@ -86,7 +86,6 @@ Abstract.prototype.spawn = function (opts) {
 
 //update current DB object representation with current values of code representation
 Abstract.prototype.save = function () {
-    console.log("saving");
     var data = _.pick(this, this._db_fields);
     return this._bucket.upsert(this.selector, data);
 }
@@ -107,7 +106,6 @@ Abstract.prototype.retrieve = function () {
     return this._bucket.get(self.selector)
         .then(function (res) {
             _.merge(self, res.value);
-            console.log("GOT", res);
             return Promise.resolve(self);
         });
 }

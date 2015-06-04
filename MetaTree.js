@@ -16,7 +16,8 @@ function MetaTree(properties) {
     var opts = {
         server_ip: "127.0.0.1",
         n1ql: "127.0.0.1:8093",
-        bucket_name: "default"
+        bucket_name: "default",
+        role: "default"
     };
     _.assign(opts, properties);
 
@@ -25,12 +26,15 @@ function MetaTree(properties) {
         n1ql: opts.n1ql
     });
 
+
+    this._role = opts.role;
     this._bucket_name = opts.bucket_name;
     this._db = DB_Face.bucket(this._bucket_name);
     this._linker = new Linker(this._db);
     this._uuid_id = identifier.do("uuid");
     this._default_id = identifier.do();
     this._model_dir = path.resolve(__dirname, "Model");
+    this.initModel(this._model_dir);
 }
 
 MetaTree.prototype.initModel = function (model_dir) {
@@ -38,7 +42,6 @@ MetaTree.prototype.initModel = function (model_dir) {
     var promises = [];
     var self = this;
     var dirs = _.isArray(model_dir) ? model_dir : [model_dir];
-    dirs.push(this._model_dir);
     var dir_promises = _.map(dirs, function (dir) {
         return fs.statAsync(dir)
             .then(function (res) {
@@ -64,6 +67,7 @@ MetaTree.prototype.initModel = function (model_dir) {
                 var promise = meta_object
                     .init(self._db)
                     .then(function (res) {
+                        meta_object.role = self._role;
                         self[res.constructor.name] = Object.seal(res);
                     });
                 promises.push(promise);
