@@ -1,7 +1,7 @@
 //Just quickly set up test bucket
 var cb = require("couchbase");
-var config = require("./Consts/config");
-var Error = require("./Error");
+var config = require("./const/config");
+var Error = require("./Error/MetaTreeError");
 
 var cluster = null;
 
