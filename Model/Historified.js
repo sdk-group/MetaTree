@@ -66,8 +66,7 @@ Historified.prototype.get = function (key) {
 }
 
 Historified.prototype.set = function (key, val, persist) {
-    //   console.log("SET", key, !_.isString(key) || !val);
-    if (!_.isString(key) || !val) return false;
+    if (!_.isString(key)) return false;
 
     var setter = _.camelCase("set_" + key);
     var res = _.get(this, setter, false);
