@@ -67,7 +67,6 @@ Historified.prototype.get = function (key) {
 
 Historified.prototype.set = function (key, val, persist) {
     if (!_.isString(key)) return false;
-
     var setter = _.camelCase("set_" + key);
     var res = _.get(this, setter, false);
     // console.log(setter);
@@ -78,9 +77,9 @@ Historified.prototype.set = function (key, val, persist) {
     if (persist) return this._writedown();
 }
 
-Historified.prototype.save = function () {
+Historified.prototype.save = function (opts) {
     var self = this;
-    return Historified.super_.prototype.save.call(this)
+    return Historified.super_.prototype.save.call(this, opts)
         .then(function (res) {
             return self._writedown();
         });

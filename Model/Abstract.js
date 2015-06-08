@@ -85,15 +85,15 @@ Abstract.prototype.spawn = function (opts) {
 }
 
 //update current DB object representation with current values of code representation
-Abstract.prototype.save = function () {
+Abstract.prototype.save = function (opts) {
     var data = _.pick(this, this._db_fields);
-    return this._bucket.upsert(this.selector, data);
+    return this._bucket.upsert(this.selector, data, opts || {});
 }
 
 //updates DB representation of object. All unsaved changes in code representation will be lost.
-Abstract.prototype.update = function (opts) {
+Abstract.prototype.update = function (opts, db_opts) {
     var self = this;
-    return this._bucket.get(self.selector)
+    return this._bucket.get(self.selector, db_opts || {})
         .then(function (res) {
             _.merge(self, res.value, opts);
             return self.save();
@@ -101,17 +101,17 @@ Abstract.prototype.update = function (opts) {
 }
 
 //load the DB representation to current object; note that this should not be called on metaobjects
-Abstract.prototype.retrieve = function () {
+Abstract.prototype.retrieve = function (opts) {
     var self = this;
-    return this._bucket.get(self.selector)
+    return this._bucket.get(self.selector, opts || {})
         .then(function (res) {
             _.merge(self, res.value);
             return Promise.resolve(self);
         });
 }
 
-Abstract.prototype.remove = function () {
-    return this._bucket.remove(this.selector);
+Abstract.prototype.remove = function (opts) {
+    return this._bucket.remove(this.selector, opts || {});
 }
 
 Abstract.prototype.isInSchema = function (key) {
