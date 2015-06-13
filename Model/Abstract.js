@@ -44,6 +44,12 @@ function Abstract() {
             enumerable: false,
             configurable: false
         },
+        "role": {
+            value: "default",
+            writable: true,
+            enumerable: false,
+            configurable: false
+        },
         "_meta_fields": {
             value: [],
             writable: true,

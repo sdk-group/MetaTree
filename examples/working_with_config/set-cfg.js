@@ -4,10 +4,11 @@ var MetaTree = require("../../MetaTree");
 var util = require("util");
 var _ = require("lodash");
 var path = require("path");
+var config = require("../../const/config")
 
 var meta_tree = new MetaTree({
-    server_ip: "192.168.1.2",
-    n1ql: "192.168.1.2:8093",
+    server_ip: "127.0.0.1",
+    n1ql: "127.0.0.1:8093",
     bucket_name: "mt"
 });
 
@@ -15,8 +16,11 @@ var cfg1 = null;
 var cfg2 = null;
 var cfg3 = null;
 var Config = null;
-meta_tree.initModel(path.resolve(__dirname, "Model"))
+meta_tree
+    .initModel()
+    .delay(1500)
     .then(function () {
+        console.log(meta_tree);
         Config = meta_tree.Config;
         cfg1 = meta_tree.create(Config, {
             db_id: 1,

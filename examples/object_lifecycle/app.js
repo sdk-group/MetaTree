@@ -33,7 +33,7 @@ meta_tree.initModel([path.resolve(__dirname, "Model"), path.resolve(__dirname, "
         console.log("after creation op1", op1);
         console.log("after creation op2", op2);
         console.log("op == parent metaobject?", (Operator == op1) || (Operator == op2));
-        return Promise.all([meta_tree.retrieve(op1), op2.retrieve()]);
+        return Promise.all([meta_tree.retrieve(op1), op2.save(), op2.retrieve()]);
     })
     .then(function (res) {
         Operator.enabled = null;
