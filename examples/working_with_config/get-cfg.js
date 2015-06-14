@@ -9,6 +9,7 @@ config.load({
         cfg1: "config/1",
         cfg2: "config/2"
     })
+    .delay(1500)
     .then(function () {
         console.log(util.inspect(config, {
             //        showHidden: true,

@@ -36,9 +36,9 @@ IdentifierStrategy.prototype.strategies = {
     schema: function (type) {
         return ["schema", type].join("/");
     },
-    history: function (author, selector) {
+    history: function (role, selector) {
         var ts = ~~(_.now() / 1000);
-        return [("history-" + author), selector, ts].join("/");
+        return ["history", role, selector, ts].join("/");
     }
 }
 var ids = new IdentifierStrategy();

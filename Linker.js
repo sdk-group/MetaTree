@@ -1,6 +1,5 @@
 'use strict';
 
-var Abstract = require("./Model/Abstract");
 var Error = require('./Error/MetaTreeError')
 var Promise = require("bluebird");
 var identifier = require("./Strategy/IdentifierStrategy");

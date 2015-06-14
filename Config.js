@@ -27,7 +27,8 @@ var Config = function (bucket_name) {
                     _cfg_keys[cfg_name] = cfg_id;
                 _cfg_origs[cfg_name] = res.value;
                 var def = _.cloneDeep(res.value.default);
-                return Promise.resolve(_.merge(def, res.value));
+                var result = (!def || _.isEmpty(def)) ? res.value : _.merge(def, res.value);
+                return Promise.resolve(result);
             })
             .catch(function (err) {
                 _cfg_keys = _.omit(_cfg_keys, cfg_name);

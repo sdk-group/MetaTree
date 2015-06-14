@@ -8,15 +8,15 @@ var _ = require("lodash");
 var path = require("path");
 
 var meta_tree = new MetaTree({
-    server_ip: "192.168.1.2",
-    n1ql: "192.168.1.2:8093",
+    server_ip: "192.168.1.3",
+    n1ql: "192.168.1.3:8093",
     bucket_name: "mt"
 });
 
 var op1 = null;
 var op2 = null;
 var Operator = null;
-meta_tree.initModel(path.resolve(__dirname, "Model"))
+meta_tree.initModel([path.resolve(__dirname, "Model"), path.resolve(__dirname, "../historified/Model")])
     .then(function () {
         Operator = meta_tree.Operator;
         op1 = meta_tree.create(Operator, {
@@ -33,7 +33,7 @@ meta_tree.initModel(path.resolve(__dirname, "Model"))
         console.log("after creation op1", op1);
         console.log("after creation op2", op2);
         console.log("op == parent metaobject?", (Operator == op1) || (Operator == op2));
-        return Promise.all([meta_tree.retrieve(op1), op2.retrieve()]);
+        return Promise.all([meta_tree.retrieve(op1), op2.save(), op2.retrieve()]);
     })
     .then(function (res) {
         Operator.enabled = null;

@@ -2,7 +2,7 @@
     "name": "MetaTree",
     "version": "0.0.2",
     "description": "Object model atop of couchbase",
-    "main": "MetaTree.js",
+    "main": "MTEntrance.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
@@ -22,7 +22,6 @@
         "bluebird": "^2.9.14",
         "lodash": "^3.6.0",
         "node-uuid": "^1.4.3",
-        "traverse": "^0.6.6",
-        "Couchbird": "git+https://github.com/YuuKohaku/Couchbird.git"
+        "traverse": "^0.6.6"
     }
 }

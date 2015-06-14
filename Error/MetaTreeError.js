@@ -3,7 +3,7 @@ var errors = require("./errors");
 var AbstractError = require("./AbstractError");
 
 function MetaTreeError(info, message) {
-    AbstractError.call(this, "CBirdError", info, message);
+    AbstractError.call(this, "MetaTreeError", info, message);
     Error.captureStackTrace(this, MetaTreeError);
 }
 
