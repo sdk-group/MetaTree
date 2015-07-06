@@ -85,4 +85,15 @@ Historified.prototype.save = function (opts) {
         });
 }
 
+Historified.prototype.update = function (opts, db_opts) {
+    var self = this;
+    for (var i in opts) {
+        this.set(i, opts[i]);
+    }
+    return self._writedown()
+        .then(function (res) {
+            return Historified.super_.prototype.update.call(self, opts, db_opts);
+        });
+}
+
 module.exports = Historified;
