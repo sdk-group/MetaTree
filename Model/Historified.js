@@ -79,9 +79,20 @@ Historified.prototype.set = function (key, val, persist) {
 
 Historified.prototype.save = function (opts) {
     var self = this;
-    return Historified.super_.prototype.save.call(this, opts)
+    return self._writedown()
         .then(function (res) {
-            return self._writedown();
+            return Historified.super_.prototype.save.call(self, opts);
+        });
+}
+
+Historified.prototype.update = function (opts, db_opts) {
+    var self = this;
+    for (var i in opts) {
+        this.set(i, opts[i]);
+    }
+    return self._writedown()
+        .then(function (res) {
+            return Historified.super_.prototype.update.call(self, opts, db_opts);
         });
 }
 
