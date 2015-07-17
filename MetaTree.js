@@ -30,7 +30,7 @@ function MetaTree(properties) {
     this._role = opts.role;
     this._bucket_name = opts.bucket_name;
     this._db = DB_Face.bucket(this._bucket_name);
-    this._linker = new Linker(this._db);
+    this._linker = new Linker(properties);
     this._uuid_id = identifier.do("uuid");
     this._default_id = identifier.do();
     this._model_dir = path.resolve(__dirname, "Model");
