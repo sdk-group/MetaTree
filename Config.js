@@ -4,11 +4,10 @@ var Promise = require("bluebird");
 var Error = require("./Error/MetaTreeError");
 var Couchbird = require('Couchbird');
 var traverse = require("traverse");
-var config = require("./const/config");
 
 var DB_Face = null;
 
-var Config = function (bucket_name) {
+var Config = function (config) {
     var _cfg_keys = {};
     var _cfg_origs = {};
     var _initial = config;
@@ -18,7 +17,7 @@ var Config = function (bucket_name) {
         n1ql: config.db.n1ql
     });
 
-    var _db = DB_Face.bucket(config.config_bucket);
+    var _db = DB_Face.bucket(config.db.bucket_name);
     var _path_delimiter = ".";
 
     var _promisedConfig = function (cfg_id, cfg_name) {

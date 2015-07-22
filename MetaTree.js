@@ -30,7 +30,7 @@ function MetaTree(properties) {
     this._role = opts.role;
     this._bucket_name = opts.bucket_name;
     this._db = DB_Face.bucket(this._bucket_name);
-    this._linker = new Linker(this._db);
+    this._linker = new Linker(properties);
     this._uuid_id = identifier.do("uuid");
     this._default_id = identifier.do();
     this._model_dir = path.resolve(__dirname, "Model");
@@ -127,10 +127,24 @@ MetaTree.prototype.link = function (obj1, obj2, relation) {
     return this._linker.link(obj1_sel, obj2_sel, relation);
 }
 
+MetaTree.prototype.link_mutual = function (obj1, obj2, relation) {
+    if (!(obj1 instanceof Abstract) && !(obj2 instanceof Abstract) && !(_.isString(obj1)) && !(_.isString(obj2)))
+        throw new Error("INVALID_ARGUMENT", "Arguments should be either objects or strings.");
+    var obj1_sel = (obj1 instanceof Abstract) ? obj1.selector : obj1;
+    var obj2_sel = (obj2 instanceof Abstract) ? obj2.selector : obj2;
+    return this._linker.link_mutual(obj1_sel, obj2_sel, relation);
+}
+
 MetaTree.prototype.unlink = function (obj1, obj2) {
     var obj1_sel = (obj1 instanceof Abstract) ? obj1.selector : obj1;
     var obj2_sel = (obj2 instanceof Abstract) ? obj2.selector : obj2;
     return this._linker.unlink(obj1_sel, obj2_sel);
+}
+
+MetaTree.prototype.unlink_mutual = function (obj1, obj2) {
+    var obj1_sel = (obj1 instanceof Abstract) ? obj1.selector : obj1;
+    var obj2_sel = (obj2 instanceof Abstract) ? obj2.selector : obj2;
+    return this._linker.unlink_mutual(obj1_sel, obj2_sel);
 }
 
 MetaTree.prototype.getObjectLinks = function (obj1, selector) {
@@ -142,7 +156,7 @@ MetaTree.prototype.getObjectLinks = function (obj1, selector) {
             obj_type: chunks[0]
         }
     }
-    return this._linker.objectLinks(obj1_sel, opts);
+    return this._linker.object_links(obj1_sel, opts);
 }
 
 module.exports = MetaTree;

@@ -76,7 +76,18 @@ function setup() {
             "views": {
                 "object_links": {
                     "map": "function (doc, meta) {\n  var id = meta.id.split(/[:\\/]/);\n  id.shift();\n  emit(id, meta.id);\n  emit(id.slice(2,4).concat(id.slice(0,2)), meta.id);  \n}",
-                    "reduce": "function(keys, vals, rereduce){\n  var out = [];\n  for(k in vals){\n  \tout.push(vals[k]);\n  }\n  return out;\n}"
+                    "reduce": "function (keys, vals, rereduce) {\
+    n
+    var out = [];\
+    n
+    for (k in vals) {\
+        n\ tout.push(vals[k]);\
+        n
+    }\
+    n
+    return out;\
+    n
+}"
                 }
             },
             "spatial": {}
